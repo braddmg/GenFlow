@@ -48,7 +48,7 @@ Options: <br>
 -h     Print this Help. <br>
 -f     FASTA file(s). If you have more than one, provide file names separated by coma: <br>
        file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder. <br>
--t     Number of threads—don't overwhelm your computer. <br>
+-t     Number of threads. Don't be too rude with your computer. <br>
 -G     Geometric Index value for selecting core genes (default: 0.8). <br>
 -F     Functional Index value for selecting core genes (default: 0.8). <br>
 ```
