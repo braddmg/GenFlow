@@ -1,6 +1,6 @@
 # GenFlow: A Bioinformatic WorkFLow for Phylogenomic Analysis
 
-GenFlow is a streamlined phylogenomic analysis pipeline that combines several tools, including NCBI’s download tool, EDirect, Anvi’o, MAFFT, and FastTree, to provide users with an easy, one-command solution for performing phylogenomic analysis.
+GenFlow is a streamlined phylogenomic analysis pipeline that combines several tools, including NCBI Datasets command-line tools, EDirect, Anvi’o, MAFFT, and FastTree, to provide users with an easy, one-command solution for performing phylogenomic and ANI analysis.
 
 ## Repository
 All the necessary data to perform the analysis is available in the [GenFlow GitHub repository](https://github.com/braddmg/GenFlow).
