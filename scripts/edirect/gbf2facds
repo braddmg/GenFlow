@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Public domain notice for all NCBI EDirect scripts is located at:
+# https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Public_Domain_Notice
+
+# Converts GenBank flatfile to fasta_cds_na or fasta_cds_aa format
+
+# efetch -db nuccore -id U54469 -format gb | gbf2facds -na
+# efetch -db nuccore -id NC_019703.1 -format gb -seq_start 3890572 -seq_stop 3891654 | gbf2facds -aa
+
+seqtype="transcription"
+accnsfx="_cds_"
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    nuc | -nuc | NUC | -NUC | na | -na | NA | -NA )
+      seqtype="transcription"
+      accnsfx="_cds_"
+      shift
+      ;;
+    prt | -prt | PRT | -PRT | aa | -aa | AA | -AA )
+      seqtype="translation"
+      accnsfx="_prot_"
+      shift
+      ;;
+    * )
+      exec >&2
+      echo "$0: Unrecognized argument $1"
+      exit 1
+      ;;
+  esac
+done
+
+gbf2info |
+xtract -pattern GenBankInfo -ACCN accession \
+  -group feature -if feature_key -equals CDS \
+    -tab " " -pfx ">" -sep "$accnsfx" -element "&ACCN,protein_id" -rst \
+    -bkt gene -element gene \
+    -bkt protein -element product \
+    -bkt protein_id -element protein_id \
+    -bkt location -element location \
+    -bkt gbkey -element feature_key -clr \
+    -rst -deq "\n" -sep "\n" -fasta "$seqtype" -rst -deq "\n"

@@ -1,0 +1,282 @@
+#!/bin/sh
+
+# Public domain notice for all NCBI EDirect scripts is located at:
+# https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Public_Domain_Notice
+
+helper=""
+
+if [ $# -gt 0 ]
+then
+  helper="$1"
+  shift
+else
+  echo "Must supply name of indexing script"
+  exit 1
+fi
+
+if [ $# -lt 1 ]
+then
+  echo "Must supply name of one or more indexed fields"
+  exit 1
+fi
+
+MASTER=""
+WORKING=""
+
+# get local master and working volumes from database
+ev=$( rchive -local pubmed )
+if [ -n "$ev" ]
+then
+  MASTER="${ev%:*}"
+  WORKING="${ev#*:}"
+fi
+
+if [ -z "$MASTER" ]
+then
+  echo "ERROR: Must supply path to local data by setting EDIRECT_LOCAL_MASTER environment variable" >&2
+  exit 1
+fi
+
+if [ -z "$WORKING" ]
+then
+  echo "ERROR: Must supply path to local data by setting EDIRECT_LOCAL_WORKING environment variable" >&2
+  exit 1
+fi
+
+# remove trailing slash
+MASTER=${MASTER%/}
+WORKING=${WORKING%/}
+
+# remove trailing pubmed folder to get volume names
+MVOLUME=${MASTER%/pubmed}
+WVOLUME=${WORKING%/pubmed}
+
+# check for existence of parent volumes
+if [ ! -d "$MVOLUME" ]
+then
+  echo "ERROR: Master volume $MVOLUME is absent"
+  exit 1
+fi
+
+if [ ! -d "$WVOLUME" ]
+then
+  echo "ERROR: Working volume $WVOLUME is absent"
+  exit 1
+fi
+
+# create pubmed directories on volumes, if necessary
+if [ ! -d "$MASTER" ]
+then
+  echo "Creating pubmed directory on master volume $MVOLUME"
+  mkdir -p "$MASTER"
+fi
+
+if [ ! -d "$WORKING" ]
+then
+  echo "Creating pubmed directory on working volume $WVOLUME"
+  mkdir -p "$WORKING"
+fi
+
+# check for presence of pubmed directories on volumes
+if [ ! -d "$MASTER" ]
+then
+  echo "ERROR: Unable to find master directory $MASTER"
+  exit 1
+fi
+
+if [ ! -d "$WORKING" ]
+then
+  echo "ERROR: Unable to find working directory $WORKING"
+  exit 1
+fi
+
+# report data locations
+echo "MASTER $MASTER"
+echo "WORKING $WORKING"
+
+for dir in Archive Data Postings
+do
+  mkdir -p "$MASTER/$dir"
+done
+
+if [ -d "$MASTER/Sentinels" ]
+then
+  mv "$MASTER/Sentinels" "$MASTER/Archive"
+else
+  mkdir -p "$MASTER/Archive/Sentinels"
+fi
+
+if [ -d "$WORKING/Pubmed" ]
+then
+  mv "$WORKING/Pubmed" "$WORKING/Source"
+else
+  mkdir -p "$WORKING/Source"
+fi
+
+for dir in Extras Index Invert Merged Scratch
+do
+  mkdir -p "$WORKING/$dir"
+done
+
+for dir in Current Indexed Inverted
+do
+  mkdir -p "$WORKING/Scratch/$dir"
+done
+
+date
+
+seconds_start=$(date "+%s")
+echo "Removing Previous Indices"
+cd "$WORKING/Scratch/Indexed"
+target="$WORKING/Scratch/Indexed"
+find "$target" -name "*.e2x" -delete
+find "$target" -name "*.e2x.gz" -delete
+cd "$WORKING/Scratch/Inverted"
+target="$WORKING/Scratch/Inverted"
+find "$target" -name "*.inv" -delete
+find "$target" -name "*.inv.gz" -delete
+cd "$WORKING/Merged"
+target="$WORKING/Merged"
+find "$target" -name "*.mrg" -delete
+find "$target" -name "*.mrg.gz" -delete
+seconds_end=$(date "+%s")
+seconds=$((seconds_end - seconds_start))
+echo "$seconds seconds"
+CLR=$seconds
+
+seconds_start=$(date "+%s")
+echo "Collecting Current PubMed Archive"
+cd "$WORKING/Scratch/Current"
+target="$WORKING/Scratch/Current"
+if [ \! -f pubmed001.xml ]
+then
+  [ -f pubmed001.xml.gz ] || pm-collect "$MASTER/Archive" "$WORKING/Scratch/Current"
+  echo "Expanding Current PubMed Archive"
+  for fl in *.xml.gz
+  do
+    base=${fl%.xml.gz}
+    echo "$base.xml"
+    gunzip -c "$fl" |
+    xtract -set PubmedArticleSet -index -pattern PubmedArticle > "$target/$base.xml"
+    sleep 1
+    rm "$fl"
+  done
+fi
+seconds_end=$(date "+%s")
+seconds=$((seconds_end - seconds_start))
+echo "$seconds seconds"
+EXP=$seconds
+
+seconds_start=$(date "+%s")
+cd "$WORKING/Scratch/Indexed"
+target="$WORKING/Scratch/Indexed"
+find "$target" -name "*.e2x" -delete
+find "$target" -name "*.e2x.gz" -delete
+seconds_start=$(date "+%s")
+echo "Indexing Custom Field"
+cd "$WORKING/Scratch/Current"
+target=${target%/}
+if [ -f "pubmed001.xml.gz" ]
+then
+  for fl in *.xml.gz
+  do
+    base=${fl%.xml.gz}
+    echo "$base.e2x"
+    gunzip -c "$fl" |
+    "$helper" |
+    gzip -1 > "$target/$base.e2x.gz"
+    sleep 1
+  done
+elif [ -f "pubmed001.xml" ]
+then
+  for fl in *.xml
+  do
+    base=${fl%.xml}
+    echo "$base.e2x"
+    cat "$fl" |
+    "$helper" |
+    gzip -1 > "$target/$base.e2x.gz"
+    sleep 1
+  done
+else
+  echo "Unable to find current PubMed working files"
+  exit 1
+fi
+seconds_end=$(date "+%s")
+seconds=$((seconds_end - seconds_start))
+echo "$seconds seconds"
+IDX=$seconds
+
+seconds_start=$(date "+%s")
+cd "$WORKING/Scratch/Indexed"
+echo "Inverting Custom Indices"
+target="$WORKING/Scratch/Inverted"
+find "$target" -name "*.inv" -delete
+find "$target" -name "*.inv.gz" -delete
+for fl in *.e2x.gz
+do
+  base=${fl%.e2x.gz}
+  echo "$base.inv"
+  gunzip -c "$fl" |
+  rchive -e2invert |
+  gzip -1 > "$target/$base.inv.gz"
+  sleep 1
+done
+seconds_end=$(date "+%s")
+seconds=$((seconds_end - seconds_start))
+echo "$seconds seconds"
+INV=$seconds
+
+seconds_start=$(date "+%s")
+cd "$WORKING/Scratch/Inverted"
+echo "Merging Custom Indices"
+target="$WORKING/Merged"
+find "$target" -name "*.mrg" -delete
+find "$target" -name "*.mrg.gz" -delete
+osname=`uname -s | sed -e 's/_NT-.*$/_NT/; s/^MINGW[0-9]*/CYGWIN/'`
+if [ "$osname" = "CYGWIN_NT" -a -x /bin/cygpath ]
+then
+  target=`cygpath -w "$target"`
+fi
+target=${target%/}
+rchive -gzip -merge "$target" *.inv.gz
+seconds_end=$(date "+%s")
+seconds=$((seconds_end - seconds_start))
+echo "$seconds seconds"
+MRG=$seconds
+
+seconds_start=$(date "+%s")
+cd "$WORKING/Merged"
+echo "Producing Custom Postings"
+target="$MASTER/Postings"
+osname=`uname -s | sed -e 's/_NT-.*$/_NT/; s/^MINGW[0-9]*/CYGWIN/'`
+if [ "$osname" = "CYGWIN_NT" -a -x /bin/cygpath ]
+then
+  target=`cygpath -w "$target"`
+fi
+target=${target%/}
+for fl in *.mrg.gz
+do
+  echo "$fl"
+done |
+sort |
+xargs -n 100 echo |
+while read files
+do
+  rchive -promote "$target" "$*" $files
+done
+seconds_end=$(date "+%s")
+seconds=$((seconds_end - seconds_start))
+echo "$seconds seconds"
+PST=$seconds
+
+echo "CLR $CLR seconds"
+echo "EXP $EXP seconds"
+echo "IDX $IDX seconds"
+echo "INV $INV seconds"
+echo "MRG $MRG seconds"
+echo "PST $PST seconds"
+
+echo ""
+
+date
