@@ -89,6 +89,11 @@ Phylogenomic Tree: The output of the phylogenomic analysis.
 pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis.
 The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready.
 
+## Logs Folder
+The `logs` folder contains log files generated during the execution of the GenFlow pipeline. These files are crucial for troubleshooting and understanding the workflow's performance. 
+
+To view details about the number of core genes used in the analysis, please check the **core.log** file. Other log files document various steps of the process and can provide insights into any issues encountered during execution.
+
 ## Citation
 
 If you use GenFlow in your research, please consider citing the following tools:
