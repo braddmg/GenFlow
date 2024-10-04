@@ -20,17 +20,18 @@ Make sure you have the following installed:
 2. Create the Conda environment: <br>
    Run the following command to create the environment from the GenFlow.yml file provided:
  ```bash
-  conda env create -f GenFlow.yml
+ conda env create -f GenFlow.yml
  ```
 3. Set up the Conda environment:<br>
-    After creating the environment, run the setup.sh file to install all necessary dependencies and set up the pipeline:
+After creating the environment, run the setup.sh file to install all necessary dependencies and set up the pipeline:
 ```bash
-  bash setup.sh
- ```
+conda activate GenFlow
+bash setup.sh
+```
 4. Reload the Conda environment:<br>
    After running the setup.sh script, you will need to reset your Conda environment by deactivating and reactivating it:
 ```bash
- conda deactivate
+conda deactivate
 conda activate GenFlow
  ```
 5. Run the GenFlow command to verify installation:<br>
@@ -38,7 +39,7 @@ conda activate GenFlow
 ```bash
 GenFlow -h
  ```
-This will show this message:
+This will show the next message:
 ```bash
 Don't worry; sometimes we also don't know what to do. <br>
 Syntax: script [-f|-h|-g|-t|-G|-F] <br>
