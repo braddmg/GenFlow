@@ -109,3 +109,7 @@ If you use GenFlow in your research, please consider citing the following tools:
 
 Please ensure you cite these tools appropriately in your work.
 
+## Acknowledgments
+
+We acknowledge the use of OpenAI's ChatGPT for assistance in refining the text and troubleshooting parts of the code.
+
