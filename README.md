@@ -41,7 +41,7 @@ GenFlow -h
 ```
 This will show the next message:
 ```bash
-<p> Don't worry; sometimes we also don't know what to do. 
+"Don't worry; sometimes we also don't know what to do. 
 Syntax: script [-f|-h|-g|-t|-G|-F] 
 Options: 
 -g     A txt file containing all accession numbers of reference genomes (default: genomes.txt) 
@@ -50,7 +50,7 @@ Options:
        file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder.
 -t     Number of threads. Don't be too rude with your computer. 
 -G     Geometric Index value for selecting core genes (default: 0.8).
--F     Functional Index value for selecting core genes (default: 0.8).</p> 
+-F     Functional Index value for selecting core genes (default: 0.8)."
 ```
 ## Genome Data
 Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of Aeromonas hydrophila, as well as two sets of reference genomes:
