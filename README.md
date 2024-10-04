@@ -53,9 +53,24 @@ Inside the repository, you'll find a Data folder with three fasta files and two 
 Short Dataset: Contains 12 reference genomes. We recommend starting with this smaller dataset for your first run.
 Large Dataset: Contains a larger number of reference genomes for more comprehensive analysis.
 You can use either dataset based on your computational capacity and time constraints.
-
+The genome list contain NCBI accession numbers for reference genomes and should look like this:
+```bash
+cat Data/small.txt
+GCF_000633175.1
+GCF_000820325.1
+GCF_016805405.1
+GCA_963892115.1
+GCF_002850695.3
+GCF_022631195.1
+GCF_000014805.1
+GCF_029025785.1
+GCF_002285935.1
+GCF_023920205.1
+GCF_000820005.1
+GCF_028355655.1
+```
 Example Command
-For your first run, we suggest using the short dataset to test the pipeline. Here is an example command to execute the analysis:
+We suggest using the short dataset to test the pipeline. Here is an example command to execute the analysis:
 ```bash
 cd Data
 GenFlow -g short.txt -f INISA09F.fasta,INISA10F.fasta,INISA16F.fasta -t 8 -G 0.8 -F 0.8
@@ -73,3 +88,24 @@ Once the analysis completes, you will find the results in a newly created result
 Phylogenomic Tree: The output of the phylogenomic analysis.
 pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis.
 The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready.
+
+## Citation
+
+If you use GenFlow in your research, please consider citing the following tools:
+
+- **Anvi’o**: Eren, A. M., et al. (2015). Anvi'o: An advanced analysis and visualization platform for 'omics data. *PeerJ*, 3, e1319. [https://doi.org/10.7717/peerj.1319](https://doi.org/10.7717/peerj.1319)
+
+- **MAFFT**: Katoh, K., & Standley, D. M. (2013). MAFFT multiple sequence alignment software version 7: improvements in performance and usability. *Molecular Biology and Evolution*, 30(4), 772–780. [https://doi.org/10.1093/molbev/mst010](https://doi.org/10.1093/molbev/mst010)
+
+- **FastTree**: Price, M. N., Dehal, P. S., & Arkin, A. P. (2010). FastTree 2 – Approximately Maximum-Likelihood Trees for Large Alignments. *PLoS ONE*, 5(3), e9490. [https://doi.org/10.1371/journal.pone.0009490](https://doi.org/10.1371/journal.pone.0009490)
+
+- **NCBI EDirect**: Kans, J. (2013). Entrez Direct: E-utilities on the UNIX command line. In *Entrez Programming Utilities Help* (Internet). National Center for Biotechnology Information (US). [https://www.ncbi.nlm.nih.gov/books/NBK179288/](https://www.ncbi.nlm.nih.gov/books/NBK179288/)
+
+- **pyANI**: Pritchard, L., Glover, R. H., Humphris, S., Elphinstone, J. G., & Toth, I. K. (2016). Genomics and taxonomy in diagnostics for food security: soft-rotting enterobacterial plant pathogens. *Analytical Methods*, 8, 12-24. [https://doi.org/10.1039/C5AY02550H](https://doi.org/10.1039/C5AY02550H)
+
+- **DIAMOND**: Buchfink, B., Xie, C., & Huson, D. H. (2015). Fast and sensitive protein alignment using DIAMOND. *Nature Methods*, 12(1), 59–60. [https://doi.org/10.1038/nmeth.3176](https://doi.org/10.1038/nmeth.3176)
+
+- **PRODIGAL**: Hyatt, D., Chen, G.-L., Locascio, P. F., Land, M. L., Larimer, F. W., & Hauser, L. J. (2010). Prodigal: prokaryotic gene recognition and translation initiation site identification. *BMC Bioinformatics*, 11, 119. [https://doi.org/10.1186/1471-2105-11-119](https://doi.org/10.1186/1471-2105-11-119)
+
+Please ensure you cite these tools appropriately in your work.
+
