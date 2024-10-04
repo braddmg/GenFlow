@@ -8,7 +8,7 @@ All the necessary data to perform the analysis is available in the [GenFlow GitH
 ## Prerequisites
 
 Make sure you have the following installed:
-- **Conda** for environment management.
+- **Conda** for environment management. You can follow this  [tutorial](https://braddmg.github.io/GenPro/Preparacion-de-ambiente-linux/) to install Conda on WSL. 
 
 ## Installation
 
@@ -86,14 +86,14 @@ In this example:
 -g specifies the file containing the accession numbers of the reference genomes. <br>
 -f specifies the FASTA files for the analysis. <br>
 -t specifies the number of threads to use (recommended 8). <br>
--G and -F specify the geometric and functional index values for core gene selection. Here we selected 0.8 but it is also the default value for both options. <br>
+-The -G and -F options specify the geometric and functional index values for core gene selection. In this case, we selected 0.8, which is also the default value for both options.
 
 ## Results
 Once the analysis completes, you will find the results in a newly created results/ directory. <br>
 This folder contains:
 
-Phylogenomic Tree: The output of the phylogenomic analysis. <br>
-pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. <br>
+Phylogenomic Tree: The output of the phylogenomic analysis in newick format. <br>
+pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. Refer to [pyANI](https://github.com/widdowquinn/pyani) for more information <br>
 The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready. <br>
 
 ## Logs Folder
