@@ -36,16 +36,16 @@ GenFlow -h
  ```
 This will show this message:
 
-Don't worry; sometimes we also don't know what to do.
-Syntax: script [-f|-h|-g|-t|-G|-F]
-Options:
--g     A txt file containing all accession numbers of reference genomes (default: genomes.txt)
--h     Print this Help.
--f     FASTA file(s). If you have more than one, provide file names separated by coma:
-       file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder.
--t     Number of threads—don't overwhelm your computer.
--G     Geometric Index value for selecting core genes (default: 0.8).
--F     Functional Index value for selecting core genes (default: 0.8).
+Don't worry; sometimes we also don't know what to do. <br>
+Syntax: script [-f|-h|-g|-t|-G|-F] <br>
+Options: <br>
+-g     A txt file containing all accession numbers of reference genomes (default: genomes.txt) <br>
+-h     Print this Help. <br>
+-f     FASTA file(s). If you have more than one, provide file names separated by coma: <br>
+       file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder. <br>
+-t     Number of threads—don't overwhelm your computer. <br>
+-G     Geometric Index value for selecting core genes (default: 0.8). <br>
+-F     Functional Index value for selecting core genes (default: 0.8). <br>
 
 ## Genome Data
 Inside the repository, you'll find a Data folder with three fasta files and two sets of reference genomes:
@@ -77,17 +77,17 @@ GenFlow -g short.txt -f INISA09F.fasta,INISA10F.fasta,INISA16F.fasta -t 8 -G 0.8
  ```
 In this example:
 
--g specifies the file containing the accession numbers of the reference genomes.
--f specifies the FASTA files for the analysis.
--t specifies the number of threads to use (recommended 8).
--G and -F specify the geometric and functional index values for core gene selection. Here we selected 0.8 but it is also the default value for both options.
+-g specifies the file containing the accession numbers of the reference genomes. <br>
+-f specifies the FASTA files for the analysis. <br>
+-t specifies the number of threads to use (recommended 8). <br>
+-G and -F specify the geometric and functional index values for core gene selection. Here we selected 0.8 but it is also the default value for both options. <br>
 
 ## Results
 Once the analysis completes, you will find the results in a newly created results/ directory. This folder contains:
 
-Phylogenomic Tree: The output of the phylogenomic analysis.
-pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis.
-The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready.
+Phylogenomic Tree: The output of the phylogenomic analysis. <br>
+pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. <br>
+The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready. <br>
 
 ## Logs Folder
 The `logs` folder contains log files generated during the execution of the GenFlow pipeline. These files are crucial for troubleshooting and understanding the workflow's performance. 
