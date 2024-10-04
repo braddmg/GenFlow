@@ -1,0 +1,124 @@
+#!/bin/sh
+
+# Public domain notice for all NCBI EDirect scripts is located at:
+# https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Public_Domain_Notice
+
+dbase=""
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    -db )
+      dbase=$2
+      shift
+      shift
+      ;;
+    -* )
+      exec >&2
+      echo "$0: Unrecognized option $1" >&2
+      exit 1
+      ;;
+    * )
+      break
+      ;;
+  esac
+done
+
+if [ -z "$dbase" ]
+then
+  echo "Must supply database in -db argument" >&2
+  exit 1
+fi
+
+MASTER=""
+WORKING=""
+
+# get local master and working volumes from database
+ev=$( rchive -local "$dbase" )
+
+if [ -z "$ev" ]
+then
+  echo "ERROR: Unable to find local archive by environment variable or configuration file" >&2
+  exit 1
+fi
+
+MASTER="${ev%:*}"
+WORKING="${ev#*:}"
+
+if [ -z "$MASTER" ]
+then
+  echo "ERROR: Must supply path to local data by setting EDIRECT_LOCAL_MASTER environment variable" >&2
+  exit 1
+fi
+
+if [ -z "$WORKING" ]
+then
+  echo "ERROR: Must supply path to local data by setting EDIRECT_LOCAL_WORKING environment variable" >&2
+  exit 1
+fi
+
+# remove trailing slash
+MASTER=${MASTER%/}
+WORKING=${WORKING%/}
+
+# remove trailing folder to get volume names
+MVOLUME=${MASTER%/"${dbase}"}
+WVOLUME=${WORKING%/"${dbase}"}
+
+# check for existence of parent volumes
+if [ ! -d "$MVOLUME" ]
+then
+  echo "ERROR: Master volume $MVOLUME is absent" >&2
+  exit 1
+fi
+
+if [ ! -d "$WVOLUME" ]
+then
+  echo "ERROR: Working volume $WVOLUME is absent" >&2
+  exit 1
+fi
+
+# create directories on volumes, if necessary
+if [ ! -d "$MASTER" ]
+then
+  echo "Creating ${dbase} directory on master volume $MVOLUME" >&2
+  mkdir -p "$MASTER"
+fi
+
+if [ ! -d "$WORKING" ]
+then
+  echo "Creating ${dbase} directory on working volume $WVOLUME" >&2
+  mkdir -p "$WORKING"
+fi
+
+# check for presence of directories on volumes
+if [ ! -d "$MASTER" ]
+then
+  echo "ERROR: Unable to find master directory $MASTER" >&2
+  exit 1
+fi
+
+if [ ! -d "$WORKING" ]
+then
+  echo "ERROR: Unable to find working directory $WORKING" >&2
+  exit 1
+fi
+
+for dir in Archive Data Postings
+do
+  mkdir -p "$MASTER/$dir"
+done
+
+mkdir -p "$MASTER/Archive/Sentinels"
+
+for dir in Extras Index Invert Merged Scratch Source
+do
+  mkdir -p "$WORKING/$dir"
+done
+
+for dir in Current Indexed Inverted
+do
+  mkdir -p "$WORKING/Scratch/$dir"
+done
+
+echo "$ev"

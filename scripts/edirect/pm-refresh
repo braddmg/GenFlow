@@ -1,0 +1,74 @@
+#!/bin/sh
+
+# Public domain notice for all NCBI EDirect scripts is located at:
+# https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Public_Domain_Notice
+
+if [ "$#" -eq 0 ]
+then
+  echo "Must supply path for archive files"
+  exit 1
+fi
+
+archive="$1"
+index="$2"
+invert="$3"
+
+osname=$( uname -s | sed -e 's/_NT-.*$/_NT/; s/^MINGW[0-9]*/CYGWIN/' )
+if [ "$osname" = "CYGWIN_NT" -a -x /bin/cygpath ]
+then
+  archive=`cygpath -w "$archive"`
+fi
+
+archive=${archive%/}
+
+rm -f "versioned.xml.gz"
+rm -f "versioned.snt"
+
+tool="edirect"
+# modify tool if any local archive environment variable is set
+if [ -n "${EDIRECT_PUBMED_MASTER}" ]
+then
+  tool="edirect_PM"
+elif [ -n "${EDIRECT_LOCAL_MASTER}" ]
+then
+  tool="edirect_LM"
+elif [ -n "${EDIRECT_LOCAL_ARCHIVE}" ]
+then
+  tool="edirect_LA"
+elif [ -n "${EDIRECT_LOCAL_CONFIG}" ]
+then
+  tool="edirect_LC"
+fi
+
+# query to log population of local archive
+einfo -db pubmed -fields -tool "$tool" > /dev/null
+
+if [ ! -f "$archive/versioned.uid" ]
+then
+  exit
+fi
+
+total=.REFRESH_TOTAL
+local=.REFRESH_LOCAL
+
+cat "$archive/versioned.uid" | sort -n | uniq > $total
+
+cat "$total" | fetch-pubmed -strict "$archive" |
+xtract -pattern PubmedArticle -element MedlineCitation/PMID |
+sort | uniq > $local
+
+missing=$(comm -23 "$total" "$local")
+
+rm "$total"
+rm "$local"
+
+if [ -n "$missing" ]
+then
+
+  echo "$missing" |
+  efetch -db pubmed -format xml |
+  xtract -strict -compress -format flush |
+  rchive -gzip -db pubmed -strict \
+    -archive "$archive" "$index" "$invert" \
+    -index MedlineCitation/PMID^Version -pattern PubmedArticle
+fi

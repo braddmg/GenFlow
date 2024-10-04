@@ -1,0 +1,313 @@
+#!/bin/bash
+
+# Public domain notice for all NCBI EDirect scripts is located at:
+# https://www.ncbi.nlm.nih.gov/books/NBK179288/#chapter6.Public_Domain_Notice
+
+# pm-clean
+
+total_start=$(date "+%s")
+
+dbase=""
+fields=""
+
+clean=false
+scrub=false
+scour=false
+zap=false
+
+scratch=false
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    -db )
+      dbase=$2
+      shift
+      shift
+      ;;
+    -fields )
+      fields=$2
+      shift
+      shift
+      ;;
+    clean | -clean | clear | -clear )
+      # delete Indices contents and Increment files
+      clean=true
+      shift
+      ;;
+    scrub | -scrub )
+      clean=true
+      # and delete Postings directories
+      scrub=true
+      shift
+      ;;
+    scour | -scour )
+      clean=true
+      scrub=true
+      # and delete Extras, Data, Archive, and Sentinels directories
+      scour=true
+      shift
+      ;;
+    zap | -zap )
+      clean=true
+      scrub=true
+      scour=true
+      # and delete Source records and all remaining directories
+      zap=true
+      shift
+      ;;
+    scratch | -scratch )
+      # only delete contents of Scratch directories
+      scratch=true
+      shift
+      ;;
+    -* )
+      exec >&2
+      echo "$0: Unrecognized option $1, cleaning must be done separately" >&2
+      exit 1
+      ;;
+    * )
+      break
+      ;;
+  esac
+done
+
+if [ -z "$dbase" ]
+then
+  echo "Must supply database in -db argument" >&2
+  exit 1
+fi
+
+MASTER=""
+WORKING=""
+
+# get local master and working volumes from database
+ev=$( rchive -local "$dbase" )
+
+if [ -z "$ev" ]
+then
+  echo "ERROR: Unable to find local archive by environment variable or configuration file" >&2
+  exit 1
+fi
+
+MASTER="${ev%:*}"
+WORKING="${ev#*:}"
+
+if [ -z "$MASTER" ]
+then
+  echo "ERROR: Must supply path to local data by setting EDIRECT_LOCAL_MASTER environment variable" >&2
+  exit 1
+fi
+
+if [ -z "$WORKING" ]
+then
+  echo "ERROR: Must supply path to local data by setting EDIRECT_LOCAL_WORKING environment variable" >&2
+  exit 1
+fi
+
+# remove trailing slash
+MASTER=${MASTER%/}
+WORKING=${WORKING%/}
+
+if [ "$scratch" = true ]
+then
+  if [ -d "$WORKING/Scratch" ]
+  then
+    echo "Deleting Scratch Directories" >&2
+    cd "$WORKING/Scratch"
+    for dir in "$WORKING/Scratch"/*
+    do
+      if [ -d "$dir" ]
+      then
+        rm -rf "$dir" &
+      fi
+    done
+  fi
+
+  if [ -d "$MASTER/Postings" ] && [ "$fields" != "" ]
+  then
+    echo "Deleting Postings" >&2
+
+    cd "$MASTER/Postings"
+    echo "$fields" |
+    xargs -n1 echo |
+    while read dir
+    do
+      rm -rf "$MASTER/Postings/$dir" &
+    done
+  fi
+
+  wait
+
+  # do not touch regular incrementally-indexed data from primary source records
+  exit 0
+fi
+
+if [ "$clean" = true ]
+then
+  if [ -d "$WORKING/Index" ]
+  then
+    echo "Deleting Index" >&2
+    target="$WORKING/Index"
+    find "$target" -name "*.e2x" -delete
+    find "$target" -name "*.e2x.gz" -delete
+    cd "$WORKING/Index"
+    rm -rf * &
+  fi
+
+  if [ -d "$WORKING/Invert" ]
+  then
+    echo "Deleting Invert" >&2
+    target="$WORKING/Invert"
+    find "$target" -name "*.inv" -delete
+    find "$target" -name "*.inv.gz" -delete
+    cd "$WORKING/Invert"
+    rm -rf * &
+  fi
+
+  if [ -d "$WORKING/Merged" ]
+  then
+    echo "Deleting Merged" >&2
+    target="$WORKING/Merged"
+    find "$target" -name "*.mrg" -delete
+    find "$target" -name "*.mrg.gz" -delete
+  fi
+
+  sleep 1
+fi
+
+wait
+
+if [ "$scrub" = true ]
+then
+  if [ -d "$MASTER/Postings" ]
+  then
+    echo "Deleting Postings" >&2
+    target="$MASTER/Postings"
+    find "$target" -name "*.mst" -delete
+    find "$target" -name "*.pst" -delete
+    find "$target" -name "*.trm" -delete
+    find "$target" -name "*.ofs" -delete
+    find "$target" -name "*.uqi" -delete
+
+    wait
+
+    cd "$MASTER/Postings"
+    for dir in "$MASTER/Postings"/*
+    do
+      if [ -d "$dir" ]
+      then
+        rm -rf "$dir" &
+      fi
+    done
+  fi
+
+  sleep 1
+fi
+
+wait
+
+if [ "$scour" = true ]
+then
+  if [ -d "$WORKING/Extras" ]
+  then
+    echo "Deleting Extras" >&2
+    cd "$WORKING/Extras"
+    rm -rf *
+  fi
+
+  if [ -d "$MASTER/Data" ]
+  then
+    echo "Deleting Data" >&2
+    cd "$MASTER/Data"
+    rm -rf *
+  fi
+
+  if [ -d "$MASTER/Archive" ]
+  then
+    echo "Deleting Archive" >&2
+    target="$MASTER/Archive"
+    find "$target" -name "*.xml.gz" -delete
+
+    wait
+
+    cd "$MASTER/Archive"
+    for dir in "$MASTER/Archive"/*
+    do
+      if [ -d "$dir" ] && [ "$dir" != "Sentinels" ]
+      then
+        rm -rf "$dir" &
+      fi
+    done
+  fi
+
+  if [ -d "$MASTER/Archive/Sentinels" ]
+  then
+    echo "Deleting Sentinels" >&2
+    target="$MASTER/Archive/Sentinels"
+    rm -rf "*.snt"
+  fi
+
+  rm -f versioned.uid
+
+  if [ ! -d "$MASTER/Archive/Sentinels" ]
+  then
+    mkdir -p "$MASTER/Archive/Sentinels"
+  fi
+
+  sleep 1
+fi
+
+wait
+
+if [ "$zap" = true ]
+then
+  if [ -d "$MASTER" ]
+  then
+    echo "Deleting Master" >&2
+    cd "$MASTER"
+    rm -rf *
+  fi
+
+  if [ -d "$WORKING" ] && [ "$MASTER" != "$WORKING" ]
+  then
+    echo "Deleting Working" >&2
+    cd "$WORKING"
+    rm -rf *
+  fi
+
+  sleep 1
+fi
+
+wait
+
+function PrintTotalElapsedTime {
+  local L=$1
+  local T=$2
+  local D=$((T/60/60/24))
+  local H=$((T/60/60%24))
+  local M=$((T/60%60))
+  local S=$((T%60))
+  printf '%s %d second' "$L" $T 1>&2
+  (( $T > 1 )) && printf 's' 1>&2
+  if [ "$T" -gt 59 ]
+  then
+    printf ', or' 1>&2
+    (( $D > 0 )) && printf ' %d day' $D 1>&2
+    (( $D > 1 )) && printf 's' 1>&2
+    (( $H > 0 )) && printf ' %d hour' $H 1>&2
+    (( $H > 1 )) && printf 's' 1>&2
+    (( $M > 0 )) && printf ' %d minute' $M 1>&2
+    (( $M > 1 )) && printf 's' 1>&2
+    (( $S > 0 )) && printf ' %d second' $S 1>&2
+    (( $S > 1 )) && printf 's' 1>&2
+  fi
+  printf '\n' 1>&2
+}
+
+total_end=$(date "+%s")
+total=$((total_end - total_start))
+TOT=$total
+PrintTotalElapsedTime "TOT" "$TOT"
+echo "" >&2
+exit 0
