@@ -17,25 +17,29 @@ Make sure you have the following installed:
    git clone https://github.com/braddmg/GenFlow.git
    cd GenFlow
    ```
-2. Create the Conda environment: Run the following command to create the environment from the GenFlow.yml file provided:
+2. Create the Conda environment: <br>
+   Run the following command to create the environment from the GenFlow.yml file provided:
  ```bash
   conda env create -f GenFlow.yml
  ```
-3. Set up the Conda environment: After creating the environment, run the setup.sh file to install all necessary dependencies and set up the pipeline:
+3. Set up the Conda environment:<br>
+    After creating the environment, run the setup.sh file to install all necessary dependencies and set up the pipeline:
 ```bash
   bash setup.sh
  ```
-4. Reload the Conda environment: After running the setup.sh script, you will need to reset your Conda environment by deactivating and reactivating it:
+4. Reload the Conda environment:<br>
+   After running the setup.sh script, you will need to reset your Conda environment by deactivating and reactivating it:
 ```bash
  conda deactivate
 conda activate GenFlow
  ```
-5. Run the GenFlow command to verify installation: The GenFlow command is now pre-installed as part of the environment. You can check that everything is installed correctly by running the help option:
+5. Run the GenFlow command to verify installation:<br>
+   The GenFlow command is now pre-installed as part of the environment. You can check that everything is installed correctly by running the help option:
 ```bash
 GenFlow -h
  ```
 This will show this message:
-
+```bash
 Don't worry; sometimes we also don't know what to do. <br>
 Syntax: script [-f|-h|-g|-t|-G|-F] <br>
 Options: <br>
@@ -46,14 +50,14 @@ Options: <br>
 -t     Number of threads—don't overwhelm your computer. <br>
 -G     Geometric Index value for selecting core genes (default: 0.8). <br>
 -F     Functional Index value for selecting core genes (default: 0.8). <br>
-
+ ```
 ## Genome Data
 Inside the repository, you'll find a Data folder with three fasta files and two sets of reference genomes:
 
-Short Dataset: Contains 12 reference genomes. We recommend starting with this smaller dataset for your first run.
-Large Dataset: Contains a larger number of reference genomes for more comprehensive analysis.
-You can use either dataset based on your computational capacity and time constraints.
-The genome list contain NCBI accession numbers for reference genomes and should look like this:
+Short Dataset: Contains 12 reference genomes. We recommend starting with this smaller dataset for your first run.<br>
+Large Dataset: Contains a larger number of reference genomes for more comprehensive analysis.<br>
+You can use either dataset based on your computational capacity and time constraints.<br>
+The genome list contain NCBI accession numbers for reference genomes and should look like this:<br>
 ```bash
 cat Data/small.txt
 GCF_000633175.1
@@ -70,7 +74,8 @@ GCF_000820005.1
 GCF_028355655.1
 ```
 Example Command
-We suggest using the short dataset to test the pipeline. Here is an example command to execute the analysis:
+We suggest using the short dataset to test the pipeline. <br>
+Here is an example command to execute the analysis:
 ```bash
 cd Data
 GenFlow -g short.txt -f INISA09F.fasta,INISA10F.fasta,INISA16F.fasta -t 8 -G 0.8 -F 0.8
@@ -83,16 +88,19 @@ In this example:
 -G and -F specify the geometric and functional index values for core gene selection. Here we selected 0.8 but it is also the default value for both options. <br>
 
 ## Results
-Once the analysis completes, you will find the results in a newly created results/ directory. This folder contains:
+Once the analysis completes, you will find the results in a newly created results/ directory. <br>
+This folder contains:
 
 Phylogenomic Tree: The output of the phylogenomic analysis. <br>
 pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. <br>
 The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready. <br>
 
 ## Logs Folder
-The `logs` folder contains log files generated during the execution of the GenFlow pipeline. These files are crucial for troubleshooting and understanding the workflow's performance. 
+The `logs` folder contains log files generated during the execution of the GenFlow pipeline. <br>
+These files are crucial for troubleshooting and understanding the workflow's performance. 
 
-To view details about the number of core genes used in the analysis, please check the **core.log** file. Other log files document various steps of the process and can provide insights into any issues encountered during execution.
+To view details about the number of core genes used in the analysis, please check the **core.log** file.<br>
+Other log files document various steps of the process and can provide insights into any issues encountered during execution.
 
 ## Citation
 
