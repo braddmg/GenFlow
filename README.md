@@ -56,7 +56,7 @@ Options:
 ## Genome Data
 Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of *Aeromonas hydrophila*, as well as two sets of reference genomes:
 
-Short Dataset (short.txt): Contains 12 reference genomes of Aeromonas species. We recommend starting with this smaller dataset for your first run.<br>
+Short Dataset (short.txt): Contains 12 reference genomes of *Aeromonas* species. We recommend starting with this smaller dataset for your first run.<br>
 Large Dataset (large.txt): Contains a larger number of reference genomes for more comprehensive analysis.<br>
 You can use either dataset based on your computational capacity and time constraints.<br>
 The genome list contain NCBI accession numbers for reference genomes and should look like this:<br>
