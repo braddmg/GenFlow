@@ -88,6 +88,7 @@ In this example:
 -f specifies the FASTA files for the analysis. <br>
 -t specifies the number of threads to use (recommended 8). <br>
 -The -G and -F options specify the geometric and functional index values for core gene selection. In this case, we selected 0.8, which is also the default value for both options.
+As we are not employing the -DNA flag, the phylogenomic tree will be created with aminoacid sequences. But hey, if you fancy yourself a hardcore evolutionary biologist who swears by DNA sequences, just add the flag :)
 
 ## Results
 Once the analysis completes, you will find the results in a newly created results/ directory. <br>
