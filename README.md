@@ -75,7 +75,7 @@ GCF_023920205.1
 GCF_000820005.1
 GCF_028355655.1
 ```
-Example Command
+## Example Command 
 We suggest using the short dataset to test the pipeline. Running the pipeline on a laptop (in WSL) with 16 GB of RAM and 16 threads takes approximately 1 hour. <br>
 Here is an example command to execute the analysis:
 ```bash
