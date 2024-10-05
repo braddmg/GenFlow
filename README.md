@@ -42,7 +42,7 @@ GenFlow -h
 This will show the next message:
 ```txt
 Don't worry; sometimes we also don't know what to do.
-Syntax: GenFlow [-f|-h|-g|-t|-G|-F|-DNA] 
+Syntax: GenFlow [-f|-h|-g|-t|-G|-F|-N] 
 Options: 
 -g     A txt file containing all accession numbers of reference genomes (default: genomes.txt)
 -h     Print this Help.
