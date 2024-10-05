@@ -97,11 +97,11 @@ mkdir -p logs
 "$dataset" download genome accession --inputfile "$genomes" >> logs/download.log 2>&1
 unzip ncbi*
 rm *.zip
-mkdir -p Genomes
-mv ncbi_dataset/data/GC*/*.fna Genomes/
+mkdir -p Intermediate
+mv ncbi_dataset/data/GC*/*.fna Intermediate/
 rm -r ncbi_dataset md5sum.txt README.md
-cp "${Fasta[@]}" Genomes
-cd Genomes || exit
+cp "${Fasta[@]}" Intermediate
+cd Intermediate || exit
 
 # Replace names with taxa
 for f in GC* ; do
