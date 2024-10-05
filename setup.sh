@@ -1,7 +1,7 @@
 #!/bin/bash
 # Initial message
 exec > /dev/tty 2>&1  # Enable output for the initial message
-echo "Just wait, we're casting some digital spells to make everything run smoothly on your machine! And don't forget, you'll need to enter your WSL password when asked to help install some important packages :)"
+echo "Just wait, we're casting some digital spells to make everything run smoothly on your machine! And don't forget, you'll need to enter your WSL password when asked to help install some important packages (or maybe not) :)"
 # Suppress all output except errors
 exec > /dev/null 2>&1
 # Get the current Conda environment path
