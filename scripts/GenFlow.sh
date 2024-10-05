@@ -14,7 +14,7 @@ Help() {
     echo "-h     Print this Help."
     echo "-f     FASTA file(s). If you have more than one, provide file names separated by commas:"
     echo "       file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder."
-    echo "-t     Number of threads—don't overwhelm your computer."
+    echo "-t     Number of threads, don't be too rude with your computer."
     echo "-G     Geometric Index value for selecting core genes (default: 0.8)."
     echo "-F     Functional Index value for selecting core genes (default: 0.8)."
     echo "-N     Use this option to work with nucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
