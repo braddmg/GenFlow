@@ -40,4 +40,4 @@ chmod +x "$CONDA_ENV_PATH/scripts/GenFlow.sh"
 chmod +x "$CONDA_ENV_PATH/scripts/datasets"
 chmod -R +x "$CONDA_ENV_PATH/scripts/edirect"
 exec > /dev/tty 2>&1
-echo "Setup completed! Please reset your conda environment and then you will be are ready to do bioinformatics (or try it)"
+echo "Setup completed! Please reset your conda environment and then you will be are ready to do bioinformatics (or try it, sometimes it just depends on your machine’s mood!)"
