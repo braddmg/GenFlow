@@ -14,13 +14,13 @@ Make sure you have the following installed:
 
 1. **Clone the repository:**
 ```bash
-   git clone https://github.com/braddmg/GenFlow.git
-   cd GenFlow
+git clone https://github.com/braddmg/GenFlow.git
+cd GenFlow
 ```
 2. Create the Conda environment: <br>
    Run the following command to create the environment from the GenFlow.yml file provided:
 ```bash
- conda env create -f GenFlow.yml
+conda env create -f GenFlow.yml
 ```
 3. Set up the Conda environment:<br>
 After creating the environment, run the setup.sh file to install all necessary dependencies and set up the pipeline:
