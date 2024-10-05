@@ -51,7 +51,7 @@ Options:
 -t     Number of threads—don't overwhelm your computer.
 -G     Geometric Index value for selecting core genes (default: 0.8).
 -F     Functional Index value for selecting core genes (default: 0.8).
--DNA   Use this option to work with DNA sequences instead of protein sequences.
+-N     Use this option to work with nucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
 ```
 ## Genome Data
 Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of *Aeromonas hydrophila*, as well as two sets of reference genomes:
