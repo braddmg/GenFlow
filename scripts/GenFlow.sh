@@ -8,7 +8,7 @@ start_time=$(date +%s)
 Help() {
     echo "Don't worry; sometimes we also don't know what to do."
     echo
-    echo "Syntax: script [-f|-h|-g|-t|-G|-F]"
+    echo "Syntax: GenFlow [-f|-h|-g|-t|-G|-F]"
     echo "Options:"
     echo "-g     A txt file containing all accession numbers of reference genomes (default: genomes.txt)"
     echo "-h     Print this Help."
