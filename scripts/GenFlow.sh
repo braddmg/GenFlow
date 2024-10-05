@@ -17,7 +17,7 @@ Help() {
     echo "-t     Number of threads—don't overwhelm your computer."
     echo "-G     Geometric Index value for selecting core genes (default: 0.8)."
     echo "-F     Functional Index value for selecting core genes (default: 0.8)."
-    echo "-N     Use this option to work with nucleotide sequences instead of amino acid sequences."
+    echo "-N     Use this option to work with nucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
 }
 
 ############################################################
