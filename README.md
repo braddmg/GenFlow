@@ -48,7 +48,7 @@ Options:
 -h     Print this Help.
 -f     FASTA file(s). If you have more than one, provide file names separated by coma:
        file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder.
--t     Number of threads—don't overwhelm your computer.
+-t     Number of threads, don't be too rude with your computer.
 -G     Geometric Index value for selecting core genes (default: 0.8).
 -F     Functional Index value for selecting core genes (default: 0.8).
 -N     Use this option to work with nucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
