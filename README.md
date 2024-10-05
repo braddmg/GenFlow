@@ -53,7 +53,7 @@ Options:
 -F     Functional Index value for selecting core genes (default: 0.8).
 ```
 ## Genome Data
-Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of Aeromonas hydrophila, as well as two sets of reference genomes:
+Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of *Aeromonas hydrophila*, as well as two sets of reference genomes:
 
 Short Dataset (short.txt): Contains 12 reference genomes of Aeromonas species. We recommend starting with this smaller dataset for your first run.<br>
 Large Dataset (large.txt): Contains a larger number of reference genomes for more comprehensive analysis.<br>
@@ -75,7 +75,7 @@ GCF_000820005.1
 GCF_028355655.1
 ```
 Example Command
-We suggest using the short dataset to test the pipeline. <br>
+We suggest using the short dataset to test the pipeline. Running the pipeline on a laptop (in WSL) with 16 GB of RAM and 16 threads takes approximately 1 hour. <br>
 Here is an example command to execute the analysis:
 ```bash
 cd Data
@@ -117,13 +117,9 @@ If you use GenFlow in your research, please consider citing the following tools:
 
 - **pyANI**: Pritchard, L., Glover, R. H., Humphris, S., Elphinstone, J. G., & Toth, I. K. (2016). Genomics and taxonomy in diagnostics for food security: soft-rotting enterobacterial plant pathogens. *Analytical Methods*, 8, 12-24. [https://doi.org/10.1039/C5AY02550H](https://doi.org/10.1039/C5AY02550H)
 
-- **DIAMOND**: Buchfink, B., Xie, C., & Huson, D. H. (2015). Fast and sensitive protein alignment using DIAMOND. *Nature Methods*, 12(1), 59–60. [https://doi.org/10.1038/nmeth.3176](https://doi.org/10.1038/nmeth.3176)
-
 - **PRODIGAL**: Hyatt, D., Chen, G.-L., Locascio, P. F., Land, M. L., Larimer, F. W., & Hauser, L. J. (2010). Prodigal: prokaryotic gene recognition and translation initiation site identification. *BMC Bioinformatics*, 11, 119. [https://doi.org/10.1186/1471-2105-11-119](https://doi.org/10.1186/1471-2105-11-119)
-
-Please ensure you cite these tools appropriately in your work.
 
 ## Acknowledgments
 
-We acknowledge the use of OpenAI's ChatGPT for assistance in refining the text and troubleshooting parts of the code.
+We acknowledge the use of OpenAI's ChatGPT for assistance in troubleshooting parts of the code.
 
