@@ -187,7 +187,7 @@ average_nucleotide_identity.py -i fa \
                                -o ../results/pyANI \
                                --labels labels.txt \
                                --classes classes.txt \
-                               -g --gmethod seaborn --gformat svg,png -v -l pyANI.log -workers "$threads" >> ../logs/pyANI.log 2>&1
+                               -g --gmethod seaborn --gformat svg,png -v -l pyANI.log --workers "$threads" >> ../logs/pyANI.log 2>&1
 
 mv *aligned.fasta* ../results
 rm *.txt
