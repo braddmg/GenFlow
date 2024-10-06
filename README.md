@@ -61,7 +61,7 @@ Large Dataset (large.txt): Contains a larger number of reference genomes for mor
 You can use either dataset based on your computational capacity and time constraints.<br>
 The genome list contain NCBI accession numbers for reference genomes and should look like this:<br>
 ```bash
-cat Data/small.txt
+cat Data/short.txt
 GCF_000633175.1
 GCF_000820325.1
 GCF_016805405.1
