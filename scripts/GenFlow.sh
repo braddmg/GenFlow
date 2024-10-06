@@ -79,7 +79,12 @@ if [[ ${#Fasta[@]} -eq 0 ]]; then
     echo "Error: No FASTA files found."
     exit 1
 fi
-
+if [ "$DNA_mode" = true ]; then
+ echo "Using DNA mode"
+    exit 1
+else
+echo "Using PROTEIN mode"
+fi
 # Suppress all output except errors
 exec > /dev/null 2>&1
 
