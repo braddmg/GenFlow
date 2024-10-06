@@ -137,7 +137,7 @@ paste name.txt path.txt > external-genomes.txt
 rm name.txt path.txt
 
 # Generate genomes storage and pan-genome
-anvi-gen-genomes-storage -e external-genomes.txt -o Filo-GENOMES.db >> ../logs/storage.log 2>&1
+anvi-gen-genomes-storage -e external-genomes.txt -o Filo-GENOMES.db --num-threads "$threads" >> ../logs/storage.log 2>&1
 anvi-pan-genome -g Filo-GENOMES.db --project-name Filo --num-threads "$threads" >> ../logs/pangenome.log 2>&1
 
 # Get sequences for core genes
@@ -150,14 +150,16 @@ if [ "$DNA_mode" = true ]; then
                                          --concatenate-gene-clusters \
                                          --min-geometric-homogeneity-index "$G" \
                                          --min-functional-homogeneity-index "$F" \
-                                         --report-DNA-sequences >> ../logs/core.log 2>&1
+                                         --report-DNA-sequences \
+                                         --num-threads "$threads" >> ../logs/core.log 2>&1
 else
     anvi-get-sequences-for-gene-clusters -g Filo-GENOMES.db -p Filo/Filo-PAN.db -o proteins-sequences.fasta \
                                          --max-num-genes-from-each-genome 1 \
                                          --min-num-genomes-gene-cluster-occurs "$NG" \
                                          --concatenate-gene-clusters \
                                          --min-geometric-homogeneity-index "$G" \
-                                         --min-functional-homogeneity-index "$F" >> ../logs/core.log 2>&1
+                                         --min-functional-homogeneity-index "$F" \
+                                         --num-threads "$threads" >> ../logs/core.log 2>&1
 fi
 
 mkdir -p ../results
@@ -165,7 +167,7 @@ mkdir -p ../results
 # Align sequences and generate phylogenomic tree
 if [ "$DNA_mode" = true ]; then
     mafft --retree 1 --thread "$threads" --maxiterate 0 dna-sequences.fasta > dna-sequences-aligned.fasta 2>> ../logs/maft.log
-    FastTree -gtr -nt < dna-sequences-aligned.fasta > ../results/phylogenomic-tree.txt 2>> ../logs/tree.log
+    FastTree -fastest -no2nd -gtr -nt < dna-sequences-aligned.fasta > ../results/phylogenomic-tree.txt 2>> ../logs/tree.log
 else
     mafft --retree 1 --thread "$threads" --maxiterate 0 proteins-sequences.fasta > proteins-sequences-aligned.fasta 2>> ../logs/maft.log
     anvi-gen-phylogenomic-tree -f proteins-sequences-aligned.fasta \
@@ -187,7 +189,7 @@ average_nucleotide_identity.py -i fa \
                                -o ../results/pyANI \
                                --labels labels.txt \
                                --classes classes.txt \
-                               -g --gmethod seaborn --gformat svg,png -v -l pyANI.log >> ../logs/pyANI.log 2>&1
+                               -g --gmethod seaborn --gformat svg,png -v -l pyANI.log -t "$threads" >> ../logs/pyANI.log 2>&1
 
 mv *aligned.fasta* ../results
 rm *.txt
