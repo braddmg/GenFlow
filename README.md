@@ -117,7 +117,7 @@ INFO
 Your filters resulted in 3222 gene clusters that contain a total of 41886 genes.
 for downstream analyses. Just so you know.
 ```
-In this example, a total of 3,222 genes were selected based on the predefined parameters. This large number of genes is due to the fact that we are working with only 13 genomes, all belonging to the same species, which results in most genes being highly conserved. <br>
+In this example, we selected a total of 3,222 genes based on predefined parameters. This large number is due to the analysis being conducted on only 13 genomes, 11 from the same species and two from a closely related species. Thi results in most genes being highly conserved. <br>
 Other log files document various steps of the process and can provide insights into any issues encountered during execution.
 
 ## Citation
