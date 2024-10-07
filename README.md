@@ -96,9 +96,12 @@ This folder contains:
 
 Phylogenomic Tree: The output of the phylogenomic analysis in newick format. <br>
 ![Phylogenomic tree visualized in iTOLy](https://raw.githubusercontent.com/braddmg/images/main/ANIm_percentage_identity.png)
-You can see how the genomes named INISA form a separated clade from other subspecies. Boostrap values are based on 1000 resamplings made by [FastTree](http://www.microbesonline.org/fasttree/)
+<br>
+You can observe that the genomes labeled as "INISA" form a distinct clade from the other subspecies. Bootstrap values, based on 1,000 resamplings performed by [FastTree](http://www.microbesonline.org/fasttree/), provide support for these groupings. <br>
+<br>
 pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. Refer to [pyANI](https://github.com/widdowquinn/pyani) for more information <br>
 ![ANIm Percentage Identity](https://raw.githubusercontent.com/braddmg/images/main/ANIm_percentage_identity.png)
+<br>
 An important feature implemented in this pipeline is that the FASTA files for the downloaded genomes include both the taxonomy and the accession number in their filenames! This is extremely useful for downstream analysis, but please note that some manual editing may still be required for certain names, as the process isn't entirely perfect (though we did our best :c). <br> 
 The analysis will conclude with a message notifying you that your phylogenomic plots and ANI results are ready, along with a report of the total time taken for the process. <br>
 ## Logs Folder
