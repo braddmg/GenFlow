@@ -95,6 +95,8 @@ Once the analysis completes, you will find the results in a newly created result
 This folder contains:
 
 Phylogenomic Tree: The output of the phylogenomic analysis in newick format. <br>
+![Phylogenomic tree visualized in iTOLy](https://raw.githubusercontent.com/braddmg/images/main/ANIm_percentage_identity.png)
+You can see how the genomes named INISA form a separated clade from other subspecies. Boostrap values are based on 1000 resamplings made by [FastTree](http://www.microbesonline.org/fasttree/)
 pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. Refer to [pyANI](https://github.com/widdowquinn/pyani) for more information <br>
 ![ANIm Percentage Identity](https://raw.githubusercontent.com/braddmg/images/main/ANIm_percentage_identity.png)
 An important feature implemented in this pipeline is that the FASTA files for the downloaded genomes include both the taxonomy and the accession number in their filenames! This is extremely useful for downstream analysis, but please note that some manual editing may still be required for certain names, as the process isn't entirely perfect (though we did our best :c). <br> 
@@ -112,7 +114,7 @@ INFO
 Your filters resulted in 3222 gene clusters that contain a total of 41886 genes.
 for downstream analyses. Just so you know.
 ```
-In this example a total of 3222 genes were selected based on previous parameters. <br>
+In this example, a total of 3,222 genes were selected based on the predefined parameters. This large number of genes is due to the fact that we are working with only 13 genomes, all belonging to the same species, which results in most genes being highly conserved. <br>
 Other log files document various steps of the process and can provide insights into any issues encountered during execution.
 
 ## Citation
