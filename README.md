@@ -97,7 +97,7 @@ This folder contains:
 ### **Phylogenomic Tree:** The output of the phylogenomic analysis in newick format. <br>
 ![Phylogenomic tree visualized in iTOLy](https://raw.githubusercontent.com/braddmg/images/main/Aeromonas_tree.jpg)
 <br>
-You can observe that the genomes labeled as "INISA" form a distinct clade from the other subspecies. Bootstrap values, based on 1,000 resamplings performed by [FastTree](http://www.microbesonline.org/fasttree/), provide support for these groupings. <br>
+You can observe that the genomes labeled as "INISA" form a distinct clade from the other subspecies. Bootstrap values, based on 1,000 resamplings performed by [FastTree](http://www.microbesonline.org/fasttree/), provide support for these clades. <br>
 <br>
 ### **pyANI Results:** The results of the Average Nucleotide Identity (ANI) analysis. Refer to [pyANI](https://github.com/widdowquinn/pyani) for more information <br>
 ![ANIm Percentage Identity](https://raw.githubusercontent.com/braddmg/images/main/ANIm_percentage_identity.png)
