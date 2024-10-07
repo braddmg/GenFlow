@@ -147,8 +147,8 @@ paste name.txt path.txt > external-genomes.txt
 rm name.txt path.txt
 
 # Generate genomes storage and pan-genome
-anvi-gen-genomes-storage -e external-genomes.txt -o Filo-GENOMES.db --mcl-inflation "$mcl_inflation" >> ../logs/storage.log 2>&1
-anvi-pan-genome -g Filo-GENOMES.db --project-name Filo --num-threads "$threads" >> ../logs/pangenome.log 2>&1
+anvi-gen-genomes-storage -e external-genomes.txt -o Filo-GENOMES.db >> ../logs/storage.log 2>&1
+anvi-pan-genome -g Filo-GENOMES.db --project-name Filo --num-threads "$threads" --mcl-inflation "$mcl_inflation" >> ../logs/pangenome.log 2>&1
 
 # Get sequences for core genes
 NG=$(ls *.fa | wc -l)
