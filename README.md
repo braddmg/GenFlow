@@ -96,6 +96,7 @@ This folder contains:
 
 Phylogenomic Tree: The output of the phylogenomic analysis in newick format. <br>
 pyANI Results: The results of the Average Nucleotide Identity (ANI) analysis. Refer to [pyANI](https://github.com/widdowquinn/pyani) for more information <br>
+![ANIm Percentage Identity](https://raw.githubusercontent.com/braddmg/images/main/ANIm_percentage_identity.png)
 The analysis process will culminate in a message indicating that your phylogenomic plots and ANI results are ready. <br>
 
 ## Logs Folder
