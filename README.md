@@ -89,7 +89,7 @@ In this example:
 -f specifies the FASTA files for the analysis. <br>
 -t specifies the number of threads to use (recommended 8). <br>
 -The -G and -F options specify the geometric and functional index values for core gene selection. In this case, we selected 0.8, which is also the default value for both options. <br>
--As we are not employing the -N flag, the phylogenomic tree will be created with aminoacid sequences. But hey, if you fancy yourself a hardcore evolutionary biologist who swears by DNA sequences, just add the flag :)
+-As we are not employing the -N flag, the phylogenomic tree will be created with aminoacid sequences. But hey, if you fancy yourself a hardcore evolutionary biologist who swears by DNA sequences, just add the flag :) <br>
 -The MCL inflation parameter (-I) was not used, so the default value of 10 was employed. This value is recommended for identifying gene clusters in closely related genomes. Refer to this tutorial for more information: [Anvio-pangenomics](https://merenlab.org/2016/11/08/pangenomics-v2/)
 
 
