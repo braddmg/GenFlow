@@ -44,14 +44,15 @@ This will show the next message:
 Don't worry; sometimes we also don't know what to do.
 Syntax: GenFlow [-f|-h|-g|-t|-G|-F|-N] 
 Options: 
--g     A txt file containing all accession numbers of reference genomes (default: genomes.txt)
--h     Print this Help.
--f     FASTA file(s). If you have more than one, provide file names separated by coma:
+-F     A txt file containing all accession numbers of reference (G)enomes (default: genomes.txt)
+-H     Print this (H)elp.
+-F     (F)ASTA file(s). If you have more than one, provide file names separated by coma:
        file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder.
--t     Number of threads, don't be too rude with your computer.
--G     Geometric Index value for selecting core genes (default: 0.8).
--F     Functional Index value for selecting core genes (default: 0.8).
--N     Use this option to work with nucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
+-T     Number of (T)hreads, don't be too rude with your computer.
+-G     (G)eometric Index value for selecting core genes (default: 0.8).
+-F     (F)unctional Index value for selecting core genes (default: 0.8).
+-N     Use this option to work with (N)ucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
+-I     Set the (I)nflation value for MCL (default: 10, recomended for highly related genomes). See https://merenlab.org/2016/11/08/pangenomics-v2/ for more information.
 ```
 ## Genome Data
 Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of *Aeromonas hydrophila*, as well as two sets of reference genomes:
