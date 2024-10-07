@@ -104,6 +104,8 @@ These files are crucial for troubleshooting and understanding the workflow's per
 To view details about the number of core genes used in the analysis, please check the **core.log** file.<br>
 ```bash
 cat logs/core.log
+```
+```bash
 INFO
 ===============================================
 Your filters resulted in 3222 gene clusters that contain a total of 41886 genes.
