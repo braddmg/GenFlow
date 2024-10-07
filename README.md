@@ -101,8 +101,15 @@ The analysis process will culminate in a message indicating that your phylogenom
 ## Logs Folder
 The `logs` folder contains log files generated during the execution of the GenFlow pipeline. <br>
 These files are crucial for troubleshooting and understanding the workflow's performance. 
-
 To view details about the number of core genes used in the analysis, please check the **core.log** file.<br>
+```bash
+cat logs/core.log
+INFO
+===============================================
+Your filters resulted in 3222 gene clusters that contain a total of 41886 genes.
+for downstream analyses. Just so you know.
+```
+In this example a total of 3222 genes were selected based on previous parameters. <br>
 Other log files document various steps of the process and can provide insights into any issues encountered during execution.
 
 ## Citation
