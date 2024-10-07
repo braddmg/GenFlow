@@ -42,13 +42,13 @@ GenFlow -h
 This will show the next message:
 ```txt
 Don't worry; sometimes we also don't know what to do.
-Syntax: GenFlow [-f|-h|-g|-t|-G|-F|-N] 
+Syntax: GenFlow [-f|-h|-g|-t|-G|-F|-N|-I] 
 Options: 
--F     A txt file containing all accession numbers of reference (G)enomes (default: genomes.txt)
--H     Print this (H)elp.
--F     (F)ASTA file(s). If you have more than one, provide file names separated by coma:
+-g     A txt file containing all accession numbers of reference (g)enomes (default: genomes.txt)
+-h     Print this (h)elp.
+-f     Your genomes in (f)asta file format. If you have more than one, provide file names separated by coma:
        file1.fasta,file2.fasta,etc. If you do not specify it, GenFlow will use all fasta in the folder.
--T     Number of (T)hreads, don't be too rude with your computer.
+-t     Number of (t)hreads, don't be too rude with your computer.
 -G     (G)eometric Index value for selecting core genes (default: 0.8).
 -F     (F)unctional Index value for selecting core genes (default: 0.8).
 -N     Use this option to work with (N)ucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
@@ -89,7 +89,9 @@ In this example:
 -f specifies the FASTA files for the analysis. <br>
 -t specifies the number of threads to use (recommended 8). <br>
 -The -G and -F options specify the geometric and functional index values for core gene selection. In this case, we selected 0.8, which is also the default value for both options. <br>
-As we are not employing the -DNA flag, the phylogenomic tree will be created with aminoacid sequences. But hey, if you fancy yourself a hardcore evolutionary biologist who swears by DNA sequences, just add the flag :)
+-As we are not employing the -N flag, the phylogenomic tree will be created with aminoacid sequences. But hey, if you fancy yourself a hardcore evolutionary biologist who swears by DNA sequences, just add the flag :)
+-The MCL inflation parameter (-I) was not used, so the default value of 10 was employed. This value is recommended for identifying gene clusters in closely related genomes. Refer to this tutorial for more information: [Anvio-pangenomics](https://merenlab.org/2016/11/08/pangenomics-v2/)
+
 
 ## Results
 Once the analysis completes, you will find the results in a newly created results/ directory. <br>
