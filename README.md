@@ -52,7 +52,7 @@ Options:
 -G     (G)eometric Index value for selecting core genes (default: 0.8).
 -F     (F)unctional Index value for selecting core genes (default: 0.8).
 -N     Use this option to work with (N)ucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
--I     Set the (I)nflation value for MCL (default: 2). See https://merenlab.org/2016/11/08/pangenomics-v2/ for more information.
+-I     Set the (I)nflation value for MCL (default: 2). See https://academic.oup.com/nar/article/30/7/1575/2376029 for more information.
 ```
 ## Genome Data
 Inside the repository, you'll find a Data folder containing three FASTA files from a potential new subspecies of *Aeromonas hydrophila*, as well as two sets of reference genomes:
