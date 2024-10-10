@@ -199,8 +199,7 @@ average_nucleotide_identity.py -i fa \
                                --labels labels.txt \
                                --classes classes.txt \
                                -g --gmethod seaborn --gformat svg,png -v -l pyANI.log --workers "$threads" >> ../logs/pyANI.log 2>&1
-
-ANIclustermap -i fa/ -o ../results/ANIclustermap --fig_width 20 --fig_height 15 --annotation --cmap_colors white,orange,red
+                               
 mv *aligned.fasta* ../results
 rm *.txt
 rm *.fasta
