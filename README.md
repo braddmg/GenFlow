@@ -51,7 +51,7 @@ Options:
 -t     Number of (t)hreads, don't be too rude with your computer.
 -G     (G)eometric Index value for selecting core genes (default: 0.8).
 -F     (F)unctional Index value for selecting core genes (default: 0.8).
--N     Use this option to work with (N)ucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!"
+-N     Use this option to work with (N)ucleotide sequences instead of amino acid sequences. It requires a lot of RAM!!
 -I     Set the (I)nflation value for MCL (default: 2). See https://academic.oup.com/nar/article/30/7/1575/2376029 for more information.
 ```
 ## Genome Data
