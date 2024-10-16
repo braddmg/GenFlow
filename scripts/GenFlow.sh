@@ -117,7 +117,7 @@ cd Intermediate || exit
 for f in GC* ; do
     term=$(echo "$f" | cut -f1,2 -d'_')
     $esearch -db assembly -query "$term" | $esummary | \
-    $xtract -pattern DocumentSummary -sep ' ' -element Organism,Sub_value,AssemblyAccession | \
+    $xtract -pattern DocumentSummary -sep ' ' -element Organism,Strain,AssemblyAccession | \
     sed 's/ /_/g; s/://g; s+/+_+g; s/,/_/g; s/[.]/_/g; s/-/_/g; s/_([^)(]*)//; s/=//g; s/[;]//g; s/([^)(]*)//; s/[(]//; s/[)]//'
 done > NEW
 
