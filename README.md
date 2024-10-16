@@ -97,9 +97,10 @@ In this example:
 Once the analysis completes, you will find the results in a newly created results/ directory. <br>
 This folder contains:
 
-### **Phylogenomic Tree:** The output of the phylogenomic analysis in newick format. <br>
+### **Phylogenomic Tree:** 
 ![Phylogenomic tree visualized in iTOLy](https://raw.githubusercontent.com/braddmg/images/main/Aeromonas_tree.jpg)
 <br>
+The output of the phylogenomic analysis in newick format was visualized in [iTOL](https://itol.embl.de). <br>
 You can observe that the genomes labeled as "INISA" form a distinct clade from the other subspecies. Bootstrap values, based on 1,000 resamplings performed by [FastTree](http://www.microbesonline.org/fasttree/), provide support for these clades. <br>
 <br>
 ### **pyANI Results:** The results of the Average Nucleotide Identity (ANI) analysis. Refer to [pyANI](https://github.com/widdowquinn/pyani) for more information <br>
