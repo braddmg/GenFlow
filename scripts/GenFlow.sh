@@ -194,7 +194,7 @@ mkdir fasta_files
 mv *.fa fasta_files
 
 # Perform ANI analysis
-average_nucleotide_identity.py -i fa \
+average_nucleotide_identity.py -i fasta_files \
                                -o pyANI \
                                --labels labels.txt \
                                --classes classes.txt \
