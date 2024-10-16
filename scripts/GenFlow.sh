@@ -207,7 +207,7 @@ mv heatmap* ../results
 mv *aligned.fasta* ../results
 mkdir Anvio
 mv *.db Anvio/
-mv -r Filo Anvio/
+mv Filo Anvio/
 rm *
 
 # End time and calculate duration
