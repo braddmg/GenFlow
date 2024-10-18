@@ -142,6 +142,7 @@ done
 ls -1 *.db > path.txt
 sed -i '1s/^/contigs_db_path\n/' path.txt
 ls -1 *.db | sed 's/.db//' > name.txt
+sed -i 's/[.]/_/g; s/-/_/g; s/,/_/g; s/ /_/g' name.txt
 sed -i '1s/^/name\n/' name.txt
 paste name.txt path.txt > external-genomes.txt
 rm name.txt path.txt
