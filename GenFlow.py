@@ -19,7 +19,6 @@ parser.add_argument('-P', '--min_percent_identity', type=float, default=0, help=
 args = parser.parse_args()
 
 # Default values if no FASTA files specified
-# Default values if no FASTA files specified
 if not args.fasta:
     fasta_files = [f for f in os.listdir() if f.endswith(".fasta")]
 else:
