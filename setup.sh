@@ -21,11 +21,31 @@ pip install matplotlib
 if ! command -v unzip &> /dev/null; then
     sudo apt-get update -qq > /dev/null 2>&1 && sudo apt-get install -y unzip -qq > /dev/null 2>&1;
 fi
-#
-chmod +x GenFlow.py
-chmod +x scripts/datasets
-chmod -R +x scripts/edirect
-chmod +x scripts/ANI.R
+# Create directories for activation and deactivation scripts
+mkdir -p "$CONDA_ENV_PATH/etc/conda/activate.d"
+mkdir -p "$CONDA_ENV_PATH/etc/conda/deactivate.d"
+mkdir -p "$CONDA_ENV_PATH/scripts"
+
+# Copy the activation and deactivation scripts
+cp scripts/variables.sh "$CONDA_ENV_PATH/etc/conda/activate.d/"
+cp scripts/clear_variables.sh "$CONDA_ENV_PATH/etc/conda/deactivate.d/"
+
+# Copy custom scripts
+cp scripts/GenFlow.py "$CONDA_ENV_PATH/scripts/"
+cp scripts/datasets "$CONDA_ENV_PATH/scripts/"
+cp -r scripts/edirect "$CONDA_ENV_PATH/scripts/"
+cp scripts/run_script.sh "$CONDA_ENV_PATH/scripts/"
+cp scripts/ANI.R "$CONDA_ENV_PATH/scripts/"
+
+# Make the scripts executable
+chmod +x "$CONDA_ENV_PATH/etc/conda/activate.d/variables.sh"
+chmod +x "$CONDA_ENV_PATH/etc/conda/deactivate.d/clear_variables.sh"
+chmod +x "$CONDA_ENV_PATH/scripts/GenFlow.py"
+chmod +x "$CONDA_ENV_PATH/scripts/datasets"
+chmod -R +x "$CONDA_ENV_PATH/scripts/edirect"
+chmod +x "$CONDA_ENV_PATH/scripts/run_script.sh"  # Make run_script.sh executable
+chmod +x "$CONDA_ENV_PATH/scripts/ANI.R"          # Optional: Make ANI.R executable if needed
+
 
 # Install R libraries (Add your required packages here)
 Rscript -e "if (!requireNamespace('pheatmap', quietly = TRUE)) install.packages('pheatmap', repos='http://cran.r-project.org')"
