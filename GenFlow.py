@@ -30,14 +30,13 @@ else:
         fasta_files = args.fasta.split(',')
 
 # Base directory for the GenFlow installation
-GENFLOW_HOME = "/opt/GenFlow"
-
 # Paths to required scripts
-esearch = os.path.join(GENFLOW_HOME, "scripts/edirect/esearch")
-esummary = os.path.join(GENFLOW_HOME, "scripts/edirect/esummary")
-xtract = os.path.join(GENFLOW_HOME, "scripts/edirect/xtract")
-dataset = os.path.join(GENFLOW_HOME, "scripts/datasets")
-rscript = os.path.join(GENFLOW_HOME, "scripts/ANI.R")
+esearch = "/opt/GenFlow/scripts/edirect/esearch"
+esummary = "/opt/GenFlow/scripts/edirect/esummary"
+xtract = "/opt/GenFlow/scripts/edirect/xtract"
+dataset = os.path.join("scripts/./datasets")
+rscript = "/opt/GenFlow/scripts/ANI.R"
+
 
 # Validate files
 if not os.path.isfile(args.genomes):
