@@ -1,4 +1,4 @@
 #!/bin/bash
 
 unset script
-unalias GenoFlow 2>/dev/null
+unalias GenFlow 2>/dev/null
