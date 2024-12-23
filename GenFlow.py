@@ -28,14 +28,13 @@ else:
     else:
         fasta_files = args.fasta.split(',')
 
-# Base directory for the GenFlow installation
-# Paths to required scripts
-esearch = "/opt/GenFlow/scripts/edirect/esearch"
-esummary = "/opt/GenFlow/scripts/edirect/esummary"
-xtract = "/opt/GenFlow/scripts/edirect/xtract"
-dataset = "/opt/GenFlow/scripts/./datasets"
-rscript = "/opt/GenFlow/scripts/ANI.R"
-
+# Set up conda environment and paths
+CONDA_ENV_PATH = $(conda info --base)/envs/$(basename "$CONDA_PREFIX")
+dataset = f"{CONDA_ENV_PATH}/scripts/./datasets"
+esearch = f"{CONDA_ENV_PATH}/scripts/edirect/esearch"
+esummary = f"{CONDA_ENV_PATH}/scripts/edirect/esummary"
+xtract = f"{CONDA_ENV_PATH}/scripts/edirect/xtract"
+rscript = f"{CONDA_ENV_PATH}/scripts/./run_script.sh"
 
 # Validate files
 if not os.path.isfile(args.genomes):
@@ -85,20 +84,30 @@ with open("NEW", "w") as new_file:
     for f in os.listdir():
         if f.endswith(".fna"):
             term = "_".join(f.split('_', 2)[:2])  # Extract the first two parts of the file name
+            # Add a sanity check to ensure the term is valid for esearch
+            print(f"Processing file: {f} with search term: {term}")
             try:
                 esearch_cmd = f"{esearch} -db assembly -query {term}"
                 esummary_cmd = f"{esummary}"
                 xtract_cmd = f"{xtract} -pattern DocumentSummary -element Organism,Strain,AssemblyAccession"
                 full_cmd = f"{esearch_cmd} | {esummary_cmd} | {xtract_cmd}"
+                print(f"Running command: {full_cmd}")  # Debugging line to show command being executed
+
                 result = subprocess.check_output(full_cmd, shell=True, text=True, stderr=subprocess.STDOUT)
+                print(f"Raw result: {result}")  # Show the raw output of the command
+
                 result = subprocess.check_output(
                     f"echo '{result}' |  sed 's/\\t/_/g; s/ /_/g; s/://g; s/\\+/\\_/g; s/,/_/g; s/[.]/_/g; s/-/_/g; s/_([^)(]*)//g; s/=//g; s/[;]//g; s/([^)(]*)//g; s/[(]//g; s/[)]//g; s/__/_/g; s/\\_\\_/\\_/g'",
                     shell=True, text=True, stderr=subprocess.STDOUT
                 ).strip()
+
                 if result:
                     new_file.write(result + "\n")
+                else:
+                    print(f"No result found for {term}. File not renamed.")
             except subprocess.CalledProcessError as e:
                 print(f"Error processing {f}: {e}")
+                print(f"Error output: {e.output}")
 
 subprocess.run("paste OLD NEW | while read -r OLD NEW; do mv \"$OLD\" \"$NEW\"; done", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 
@@ -136,65 +145,13 @@ for fasta in os.listdir():
 subprocess.run("ls -1 *.db > path.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 subprocess.run("sed -i '1s/^/contigs_db_path\\n/' path.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 subprocess.run("ls -1 *.db | sed 's/.db//' > name.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("sed -i 's/[.]/_/g; s/-/_/g; s/,/_/g; s/ /_/g' name.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("sed -i '1s/^/name\\n/' name.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("paste name.txt path.txt > external-genomes.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("rm name.txt path.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
+subprocess.run("sed -i '1s/^/contigs_db_name\\n/' name.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
+subprocess.run("paste path.txt name.txt > external-genomes.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 
-print("Generating pan-genome...")
-# Generating the pan-genome
-subprocess.run(f"anvi-gen-genomes-storage -e external-genomes.txt -o Filo-GENOMES.db", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run(f"anvi-pan-genome -g Filo-GENOMES.db --project-name Filo --num-threads {args.threads} --mcl-inflation {args.mcl_inflation} --minbit {args.minbit} --min-percent-identity {args.min_percent_identity}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
+# Execute the main analysis script
+subprocess.run(f"sh {rscript} {args}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 
-# Count number of FASTA files
-NG = len([f for f in os.listdir() if f.endswith(".fa")])
-
-# Get sequences for core genes
-if args.dna_mode:
-    subprocess.run(f"anvi-get-sequences-for-gene-clusters -g Filo-GENOMES.db -p Filo/Filo-PAN.db -o dna-sequences.fasta --max-num-genes-from-each-genome 1 --min-num-genomes-gene-cluster-occurs {NG} --concatenate-gene-clusters --min-geometric-homogeneity-index {args.geometric_index} --min-functional-homogeneity-index {args.functional_index} --report-DNA-sequences", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-else:
-    subprocess.run(f"anvi-get-sequences-for-gene-clusters -g Filo-GENOMES.db -p Filo/Filo-PAN.db -o proteins-sequences.fasta --max-num-genes-from-each-genome 1 --min-num-genomes-gene-cluster-occurs {NG} --concatenate-gene-clusters --min-geometric-homogeneity-index {args.geometric_index} --min-functional-homogeneity-index {args.functional_index}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-
-print("Aligning sequences and creating phylogenomic tree...")
-# Align sequences and generate phylogenomic tree
-if args.dna_mode:
-    subprocess.run(f"mafft --retree 1 --thread {args.threads} --maxiterate 0 dna-sequences.fasta > dna-sequences-aligned.fasta", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-    subprocess.run(f"FastTree -fastest -no2nd -gtr -nt < dna-sequences-aligned.fasta > ../results/phylogenomic-tree.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-else:
-    subprocess.run(f"mafft --retree 1 --thread {args.threads} --maxiterate 0 proteins-sequences.fasta > proteins-sequences-aligned.fasta", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-    subprocess.run(f"anvi-gen-phylogenomic-tree -f proteins-sequences-aligned.fasta -o ../results/phylogenomic-tree.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-
-print("Performing ANI analysis...")
-# Prepare input for ANI analysis
-subprocess.run("ls -1 *.fa > path.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("ls -1 *.fa | sed 's/.fa//' > name.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("sed -i 's/[.]/_/g; s/-/_/g; s/,/_/g; s/ /_/g' name.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("paste path.txt name.txt > classes.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("cp classes.txt labels.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("rm name.txt path.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("mkdir fasta_files", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("mv *.fa fasta_files", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-
-# Perform ANI analysis
-subprocess.run(f"average_nucleotide_identity.py -i fasta_files -o pyANI --labels labels.txt --classes classes.txt -g --gmethod seaborn --gformat svg,png -v -l pyANI.log --workers {args.threads}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-
-# Run the ANI.R script
-subprocess.run(f"Rscript {rscript} pyANI/ANIm_percentage_identity.tab", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-
-# Organize the outputs
-subprocess.run("mv heatmap* ../results", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("mv *aligned.fasta* ../results", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("mkdir Anvio", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("mv *.db Anvio/", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-subprocess.run("mv Filo Anvio/", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
-
-# End time and calculate duration
+# End timing the workflow
 end_time = time.time()
-duration = end_time - start_time
-hours = int(duration // 3600)
-minutes = int((duration % 3600) // 60)
-
-# Final message
-print(f"Your analysis is ready, now you have some pretty phylogenomic plots.")
-print(f"Time elapsed: {hours} hour(s) and {minutes} minute(s).")
+print(f"Workflow completed in {end_time - start_time:.2f} seconds.")
 
