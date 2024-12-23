@@ -28,6 +28,16 @@ Introduction
 
 ``Gala`` was designed to be used by 
 
+# Statement of need
+
+# The Phylo``Gen``omic Work``Flow`` design
+
+bla bla bla
+
+# Results 
+
+# Conclusion
+
 # Acknowledgements
 We acknowledge  to the students from the course Prokaryotic Genomics from The School of Biology of the University of Costa Rica, for be the besta testers of the first GenFlow pipeline.
 # References
