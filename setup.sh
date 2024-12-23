@@ -22,6 +22,7 @@ if ! command -v unzip &> /dev/null; then
     sudo apt-get update -qq > /dev/null 2>&1 && sudo apt-get install -y unzip -qq > /dev/null 2>&1;
 fi
 # Create directories for activation and deactivation scripts
+CONDA_ENV_PATH=$(conda info --base)/envs/$(basename "$CONDA_PREFIX")
 mkdir -p "$CONDA_ENV_PATH/etc/conda/activate.d"
 mkdir -p "$CONDA_ENV_PATH/etc/conda/deactivate.d"
 mkdir -p "$CONDA_ENV_PATH/scripts"
