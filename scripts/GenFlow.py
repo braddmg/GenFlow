@@ -149,7 +149,7 @@ subprocess.run("sed -i '1s/^/contigs_db_name\\n/' name.txt", shell=True, stdout=
 subprocess.run("paste path.txt name.txt > external-genomes.txt", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 
 # Execute the main analysis script
-subprocess.run(f"sh {rscript} {args}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
+subprocess.run(f"sh {rscript} pyANI/ANIm_percentage_identity.tab", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT, check=True)
 
 # End timing the workflow
 end_time = time.time()
