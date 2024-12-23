@@ -33,7 +33,7 @@ else:
 esearch = "/opt/GenFlow/scripts/edirect/esearch"
 esummary = "/opt/GenFlow/scripts/edirect/esummary"
 xtract = "/opt/GenFlow/scripts/edirect/xtract"
-dataset = os.path.join("scripts/./datasets")
+dataset = "/opt/GenFlow/scripts/./datasets"
 rscript = "/opt/GenFlow/scripts/ANI.R"
 
 
